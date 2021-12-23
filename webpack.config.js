@@ -26,7 +26,7 @@ module.exports = {
       },
       {
         loader: 'css-loader',
-        optios: {
+        options: {
           modules: true
         }
       },
@@ -36,13 +36,13 @@ module.exports = {
     }]
   },
   devServer: {
-    contentBase: './public',
-    writeToDisk: true,
+    static: {
+      directory: './public'
+    },
+    devMiddleware: {
+      writeToDisk: true
+    },
     historyApiFallback: true
-  },
-  externals: {
-    react: 'React',
-    'react-dom': 'ReactDOM'
   },
   plugins: [
     new CleanWebpackPlugin()
