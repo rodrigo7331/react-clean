@@ -1,7 +1,7 @@
 import { AxiosHttpClient } from './axios-http-client'
-import { mockAxios } from '@/infra/test'
 import axios from 'axios'
 import { mockPostRequest } from '@/data/test'
+import { mockAxios, mockHttpResponse } from '@/infra/test'
 
 jest.mock('axios')
 
@@ -27,8 +27,11 @@ describe('AxiosHttpClient', () => {
     expect(mockedAxios.post).toHaveBeenCalledWith(request.url, request.body)
   })
 
-  test('Should return the correct statusCode and body', async () => {
+  test('Should return the correct statusCode and body on failure', async () => {
     const { sut, mockedAxios } = makeSut()
+    mockedAxios.post.mockRejectedValueOnce({
+      response: mockHttpResponse()
+    })
     const httpResponsePromise = sut.post(mockPostRequest())
     expect(httpResponsePromise).toEqual(mockedAxios.post.mock.results[0].value)
   })
