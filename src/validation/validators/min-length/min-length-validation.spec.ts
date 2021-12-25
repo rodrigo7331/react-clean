@@ -1,5 +1,5 @@
 import { InvalidFieldError } from '@/validation/errors'
-import { fieldNameMock } from '@/validation/validators/test/mock-field'
+import { fieldNameMock } from '@/validation/test'
 import faker from 'faker'
 import { MinLengthValidation } from './min-length-validation'
 
