@@ -1,18 +1,19 @@
 import { InvalidFieldError } from '@/validation/errors'
+import { fieldNameMock } from '@/validation/test/mock-field'
 import faker from 'faker'
 import { MinLengthValidation } from './min-length-validation'
 
-const fieldName = faker.random.word()
-
+const makeSut = (): MinLengthValidation => new MinLengthValidation(fieldNameMock,minLength)
+const minLength = 5
 describe('MinLengthValidation', () => {
   test('Should return error if value is invalid', () => {
-    const sut = new MinLengthValidation(fieldName, 5)
-    const error = sut.validate('1234')
-    expect(error).toEqual(new InvalidFieldError(fieldName))
+    const sut = makeSut()
+    const error = sut.validate(faker.random.alphaNumeric(minLength - 1))
+    expect(error).toEqual(new InvalidFieldError(fieldNameMock))
   })
   test('Should return falsy if valud is valid', () => {
-    const sut = new MinLengthValidation(fieldName, 5)
-    const error = sut.validate('12345')
+    const sut = makeSut()
+    const error = sut.validate(faker.random.alphaNumeric(minLength))
     expect(error).toBeFalsy()
   })
 })
