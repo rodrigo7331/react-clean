@@ -1,8 +1,8 @@
-import { Validation } from '../protocols/validation'
+import { SaveAccessToken } from '@/domain/usecases/save-access-token'
 
-export class ValidationStub implements Validation {
-  errorMessage: string
-  validate (fieldName: string, fieldValue: string): string {
-    return this.errorMessage
+export class SaveAccessTokenMock implements SaveAccessToken {
+  accessToken: string
+  async save (accessToken: string): Promise<void> {
+    this.accessToken = accessToken
   }
 }
