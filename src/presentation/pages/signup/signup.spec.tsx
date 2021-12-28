@@ -21,6 +21,16 @@ const makeSut = (params?: SutParams): SutTypes => {
   return { sut }
 }
 
+const simulateValidSubmit = async (sut: RenderResult,name = faker.name.findName(), email: string = faker.internet.email(), password: string = faker.internet.password()): Promise<void> => {
+  Helper.populateField(sut,'name', name)
+  Helper.populateField(sut,'email', email)
+  Helper.populateField(sut, 'password', password)
+  Helper.populateField(sut,'passwordConfirmation', password)
+  const form = sut.getByTestId('form')
+  fireEvent.submit(form)
+  await waitFor(() => form)
+}
+
 describe('SignUp Component', () => {
   afterEach(cleanup)
   test('Should start with initial state', () => {
@@ -90,22 +100,9 @@ describe('SignUp Component', () => {
     Helper.testButtonIsDisabled(sut, 'submit', false)
   })
 
-  const simulateValidSubmit = async (sut: RenderResult,name = faker.name.findName(), email: string = faker.internet.email(), password: string = faker.internet.password()): Promise<void> => {
-    Helper.populateField(sut,'name', name)
-    Helper.populateField(sut,'email', email)
-    Helper.populateField(sut, 'password', password)
-    Helper.populateField(sut,'passwordConfirmation', password)
-    const form = sut.getByTestId('form')
-    fireEvent.submit(form)
-    await waitFor(() => form)
-  }
-  const testElementExists = (sut: RenderResult, fieldName: string): void => {
-    const el = sut.getByTestId(fieldName)
-    expect(el).toBeTruthy()
-  }
   test('Should show spinner on submit',async () => {
     const { sut } = makeSut()
     await simulateValidSubmit(sut)
-    testElementExists(sut, 'spinner')
+    Helper.testElementExists(sut, 'spinner')
   })
 })
