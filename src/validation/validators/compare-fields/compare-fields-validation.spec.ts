@@ -2,35 +2,30 @@ import { InvalidFieldError } from '../../errors'
 import faker from 'faker'
 import { CompareFieldsValidation } from './compare-fields-validation'
 
-type SutParams = {
-  field: string
-  valueToCompare: string
-}
-
-let defaultSutParams: SutParams = {
-  field: faker.database.column(),
-  valueToCompare: faker.random.words()
-}
-
-const makeSut = (params?: SutParams): CompareFieldsValidation => (new CompareFieldsValidation(params.field, params.valueToCompare))
+const makeSut = (field: string, fieldToCompare: string): CompareFieldsValidation => (new CompareFieldsValidation(field, fieldToCompare))
 describe('CompareFieldsValidation', () => {
-  afterEach(() => {
-    defaultSutParams = {
-      field: faker.database.column(),
-      valueToCompare: faker.random.words()
-    }
-  })
   test('Should return error if compare is invalid', () => {
     const field = faker.database.column()
-    const sut = makeSut({ ...defaultSutParams, field: field })
-    const error = sut.validate(faker.random.words())
+    const fieldToCompare = faker.database.column()
+
+    const sut = makeSut(field, fieldToCompare)
+    const error = sut.validate({
+      [field]: faker.random.words(),
+      [fieldToCompare]: faker.random.words()
+    })
     expect(error).toEqual(new InvalidFieldError(field))
   })
 
   test('Should return falsy if compare is valid', () => {
-    const value = faker.random.words()
-    const sut = makeSut({ ...defaultSutParams, valueToCompare: value })
-    const error = sut.validate(value)
+    const field = faker.database.column()
+    const fieldToCompare = faker.database.column()
+    const value = faker.random.word()
+
+    const sut = makeSut(field, fieldToCompare)
+    const error = sut.validate({
+      [field]: value,
+      [fieldToCompare]: value
+    })
     expect(error).toBeFalsy()
   })
 })
