@@ -1,5 +1,6 @@
 import { EmailInUseError } from '@/domain/errors'
 import { AddAccountSpy, Helper, ValidationStub } from '@/presentation/test/'
+import { testElementText } from '@/presentation/test/form-helper'
 import { RenderResult, render, cleanup, fireEvent, waitFor } from '@testing-library/react'
 import faker from 'faker'
 import React from 'react'
@@ -139,11 +140,6 @@ describe('SignUp Component', () => {
     await simulateValidSubmit(sut)
     expect(addAccountSpy.callsCount).toBe(0)
   })
-
-  const testElementText = (sut: RenderResult, fieldName: string, text: string): void => {
-    const el = sut.getByTestId(fieldName)
-    expect(el.textContent).toBe(text)
-  }
 
   test('Should present error if  AddAccoutn fails', async () => {
     const { sut, addAccountSpy } = makeSut()
