@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { Validation } from '@/presentation/protocols/validation'
 import { AddAccount, SaveAccessToken } from '@/domain/usecases'
 import { useHistory } from 'react-router'
+import { Link } from 'react-router-dom'
 type Props = {
   validation: Validation
   addAccount: AddAccount
@@ -68,7 +69,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
             <Input type="password" name="password" placeholder="Digite sua senha"/>
             <Input type="password" name="passwordConfirmation" placeholder="Repita sua senha"/>
             <button disabled={!!state.passwordConfirmationError || !!state.nameError || !!state.emailError || !!state.passwordError} className={Styles.submit} data-testid="submit" type="submit">Entrar</button>
-            <span className={Styles.link}>Voltar para Login</span>
+            <Link data-testid="login-link" replace to="/login"className={Styles.link}>Voltar para Login</Link>
             <FormStatus/>
           </form>
         </Context.Provider>
